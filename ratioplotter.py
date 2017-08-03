@@ -11,6 +11,7 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import matplotlib
 import math
+import os
 from matplotlib.ticker import ScalarFormatter
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -56,7 +57,8 @@ def qdp_read(filename):
 # Plot x and y with labels (trying to do it)
 def plottertron(x, x_error, y, y_error, line_color, line_label, legyn, legloc, style, mrkshp):
     ax.set_xlabel('Energy (keV)')
-    ax.set_ylabel('Ratio')
+#    ax.set_ylabel('Ratio')
+    ax.set_ylabel('(High - Low) / Power Law')
     ax.set_xscale('log')
 
 #    ax.set_yscale('log')
@@ -73,7 +75,7 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, legyn, legloc, s
         ax.get_legend()
 ####################################################################################################
 
-
+os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501/newswift/rebinned_July26")
 
 ### Read in the data from the .qdp files made by wdata in iplot on XSPEC
 ### pl eeuf po0
@@ -116,7 +118,7 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, legyn, legloc, s
 #dq, sets, res = qdp_read('xmm+suz+swift_copl+zgN_Esigfree_broadband.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
 #### suz hilo fit
-#dq, sets, res = qdp_read('suz_hilo_res.qdp') ; c_set = ['r'] ; n_set = ['Suzaku']
+dq, sets, res = qdp_read('suz_hilo_res.qdp') ; c_set = ['r'] ; n_set = ['Suzaku']
 
 #### broadband copl+zg fit
 #dq1, sets, res = qdp_read('xmm+suz+swift_copl+zgN_Esigfree_broadband_fit.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
@@ -126,93 +128,96 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, legyn, legloc, s
 #dq1, sets, res = qdp_read('xmm+suz+swift_copl+reflionx_cold.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 #dq2, sets, res = qdp_read('xmm+suz+swift_copl+kblurXreflionx_blur.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
-#### Plot up the data po0
-#fig = plt.figure()
-#ax = fig.add_subplot(111)
-#ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
-#for i in range(0,sets):
-#    x = i+1
-#    if (i == 0):
-#        shape = 'd'
-#    if (i == 1):
-#        shape = 'o'
-#    if (i == 2) and (sets < 4):
-#        shape = 's'
-#    if (i == 2) and (sets > 4):
-#        shape = 'o'
-#    if (i == 3):
-#        shape = 's'
-#    if (i == 4):
-#        shape = 's'
-#    plottertron(dq["e{0}".format(x)], dq["e_err{0}".format(x)], dq["f{0}".format(x)], dq["f_err{0}".format(x)], c_set[i], n_set[i], 0, 2, 'marker', shape)
+
+
+### Plot up the data po0
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+for i in range(0,sets):
+    x = i+1
+    if (i == 0):
+        shape = 'd'
+    if (i == 1):
+        shape = 'o'
+    if (i == 2) and (sets < 4):
+        shape = 's'
+    if (i == 2) and (sets > 4):
+        shape = 'o'
+    if (i == 3):
+        shape = 's'
+    if (i == 4):
+        shape = 's'
+    plottertron(dq["e{0}".format(x)], dq["e_err{0}".format(x)], dq["f{0}".format(x)], dq["f_err{0}".format(x)], c_set[i], n_set[i], 0, 2, 'marker', shape)
 #    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-#    #ax.set_xticks([2,5,10]) # choose which x locations to have ticks
-#    #ax.set_xticklabels([2,5,10]) # set the labels to display at those ticks
-#    #ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-#    ax.set_xlim(0.3,150.0)
+    ax.set_xticks([1,10]) # choose which x locations to have ticks
+    ax.set_xticklabels([1,10]) # set the labels to display at those ticks
+    ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+    ax.set_xlim(0.7,10.0)
 #    ax.set_ylim(0.5,2.5)
-#    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+    ax.set_ylim(0.3,1.7)
+    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+
+#plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/suzaku_hilo.png',bbox_inches='tight',dpi=300)
+
+
+###### Gridspec plotting
+#if (res == 0):
+#    plt.figure()
+#    gs1 = gridspec.GridSpec(2,1)
+#    gs1.update(wspace=0, hspace=0)
+#    for i in range(0,sets):
+#        x = i+1
 #
-##plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/2-10_res_extrap_line.png',bbox_inches='tight',dpi=300)
-
-
-##### Gridspec plotting
-if (res == 0):
-    plt.figure()
-    gs1 = gridspec.GridSpec(2,1)
-    gs1.update(wspace=0, hspace=0)
-    for i in range(0,sets):
-        x = i+1
-
-        if (i == 0):
-            shape = 'd'
-        if (i == 1):
-            shape = 'o'
-        if (i == 2) and (sets < 4):
-            shape = 's'
-        if (i == 2) and (sets > 4):
-            shape = 'o'
-        if (i == 3):
-            shape = 's'
-        if (i == 4):
-            shape = 's'
-
-        ax = plt.subplot(gs1[0])
-        plottertron(dq1["e{0}".format(x)], dq1["e_err{0}".format(x)], dq1["f{0}".format(x)], dq1["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
-#        ax.set_xscale('log')
-#        ax.fill_between(x=dq1["e{0}".format(x)], y1=dq1["f{0}".format(x)]-dq1["f_err{0}".format(x)], y2=dq1["f{0}".format(x)]+dq1["f_err{0}".format(x)], color=c_set[i], label=n_set[i], alpha=0.75)
-#        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-        ax.set_xticks([2,5,10]) # choose which x locations to have ticks
-        ax.set_xticklabels([2,5,10]) # set the labels to display at those ticks
-        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-        ax.set_xlim(0.3,150.)
-        ax.set_ylim(0.4,1.7)
-#        ax.set_xlim(2.,10.)
-#        ax.set_ylim(0.6,1.4)
-
-        ax = plt.subplot(gs1[1])
-        plottertron(dq2["e{0}".format(x)], dq2["e_err{0}".format(x)], dq2["f{0}".format(x)], dq2["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
-#        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-        ax.set_xticks([1,10,100]) # choose which x locations to have ticks
-        ax.set_xticklabels([1,10,100]) # set the labels to display at those ticks
-        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-        ax.set_xlim(0.3,150.)
-        ax.set_ylim(0.4,1.7)
-#        ax.set_xlim(2.,10.)
-#        ax.set_ylim(0.6,1.4)
-
-    for i in range(0,2):
-        ax = plt.subplot(gs1[i])
-        if (i == 0):
-            ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
-        elif (i == 1):
-            ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
-
-        ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
-        if (i != 1):
-            ax.set_xticklabels([])
-        ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
-        ax.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
-
-
-#plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/physical_broadband_fits.png', bbox_inches='tight', dpi=300)
+#        if (i == 0):
+#            shape = 'd'
+#        if (i == 1):
+#            shape = 'o'
+#        if (i == 2) and (sets < 4):
+#            shape = 's'
+#        if (i == 2) and (sets > 4):
+#            shape = 'o'
+#        if (i == 3):
+#            shape = 's'
+#        if (i == 4):
+#            shape = 's'
+#
+#        ax = plt.subplot(gs1[0])
+#        plottertron(dq1["e{0}".format(x)], dq1["e_err{0}".format(x)], dq1["f{0}".format(x)], dq1["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
+##        ax.set_xscale('log')
+##        ax.fill_between(x=dq1["e{0}".format(x)], y1=dq1["f{0}".format(x)]-dq1["f_err{0}".format(x)], y2=dq1["f{0}".format(x)]+dq1["f_err{0}".format(x)], color=c_set[i], label=n_set[i], alpha=0.75)
+##        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+#        ax.set_xticks([2,5,10]) # choose which x locations to have ticks
+#        ax.set_xticklabels([2,5,10]) # set the labels to display at those ticks
+#        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#        ax.set_xlim(0.3,150.)
+#        ax.set_ylim(0.4,1.7)
+##        ax.set_xlim(2.,10.)
+##        ax.set_ylim(0.6,1.4)
+#
+#        ax = plt.subplot(gs1[1])
+#        plottertron(dq2["e{0}".format(x)], dq2["e_err{0}".format(x)], dq2["f{0}".format(x)], dq2["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
+##        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+#        ax.set_xticks([1,10,100]) # choose which x locations to have ticks
+#        ax.set_xticklabels([1,10,100]) # set the labels to display at those ticks
+#        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#        ax.set_xlim(0.3,150.)
+#        ax.set_ylim(0.4,1.7)
+##        ax.set_xlim(2.,10.)
+##        ax.set_ylim(0.6,1.4)
+#
+#    for i in range(0,2):
+#        ax = plt.subplot(gs1[i])
+#        if (i == 0):
+#            ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
+#        elif (i == 1):
+#            ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
+#
+#        ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#        if (i != 1):
+#            ax.set_xticklabels([])
+#        ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#        ax.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#
+#
+##plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/physical_broadband_fits.png', bbox_inches='tight', dpi=300)

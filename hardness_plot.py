@@ -7,12 +7,10 @@ Created on Fri Jun  9 11:36:32 2017
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import matplotlib.patches as patches
 import numpy as np
 import matplotlib
 from matplotlib.ticker import ScalarFormatter, FormatStrFormatter
-from scipy.optimize import curve_fit
+import os
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -54,6 +52,7 @@ def chisqcalc(dat, dat_err, avg):
     return chisq, red_chisq
 ####################################################################################################
 
+os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501")
 
 #d = np.genfromtxt('ratio_0.5-1.0_2.0-10.0.qdp', skip_header=3)
 #d = np.genfromtxt('ratio_0.5-2.0_2.0-10.0.qdp', skip_header=3)     # old data set
@@ -88,8 +87,8 @@ ax12.axhline(y=wa, color='k', dashes=[5,3], linewidth=1)
 #ax12.fill_between(x=d[8:17:,0], y1=waL-e_waL, y2=waL+e_waL, color='b', alpha=0.50)
 ax12.axvline(d[17,0]-d[17,1], color='k', dashes=[5,3], linewidth=1)      # below is low state
 ax12.axvline(d[22,0]-d[22,1], color='k', dashes=[5,3], linewidth=1)     # above is high state
-ax12.text(.40,.8,'low',horizontalalignment='center',transform=ax12.transAxes)
-ax12.text(.87,.8,'high',horizontalalignment='center',transform=ax12.transAxes)
+ax12.text(.40,.75,'low\nflux',horizontalalignment='center',transform=ax12.transAxes)
+ax12.text(.87,.75,'high\nflux',horizontalalignment='center',transform=ax12.transAxes)
 ax12.set_xlim(-d[0,1],d[29,0]+d[29,1])
 ax12.tick_params(axis='both', which='both', direction='in', top='on', right='on')
 ax12.set_xlabel('Time (s)')
