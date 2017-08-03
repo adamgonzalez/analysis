@@ -30,7 +30,7 @@ def error_avg(cts, err_cts, avg):
     s = np.sqrt(ssq/n)
     return s
 ####################################################################################################
-    
+
 ####################################################################################################
 def wmean(cts, err_cts):
     n = len(cts)
@@ -49,15 +49,16 @@ def chisqcalc(dat, dat_err, avg):
     chisq, red_chisq = 0., 0.
     n = len(dat)
     for i in range (0,n):
-        print dat[i]
         chisq += (dat[i]-avg)**2.0 / dat_err[i]**2.0
     red_chisq = chisq / (n-1.)
     return chisq, red_chisq
 ####################################################################################################
 
 
-d = np.genfromtxt('ratio_0.5-1.0_2.0-10.0.qdp', skip_header=3)
+#d = np.genfromtxt('ratio_0.5-1.0_2.0-10.0.qdp', skip_header=3)
 #d = np.genfromtxt('ratio_0.5-2.0_2.0-10.0.qdp', skip_header=3)     # old data set
+d = np.genfromtxt('ratio_full_0.5-1_2-10.qdp', skip_header=3)      # new data set
+
 
 # normalise the light curve so the time starts exactly at 0.0
 d[:,0] = d[:,0] - d[0,0]
@@ -80,10 +81,11 @@ print 'red_chisq for fit to total weighted avg = ', rcs
 # plot the hardness ratio
 fig = plt.figure()
 ax12 = plt.subplot(111)
-ax12.errorbar(x=d[:,0], y=d[:,6], xerr=d[:,1], yerr=d[:,7], fmt='o', markersize=0, ecolor='r', capthick=1, linewidth=1, color='r', label='Hardness Ratio')
-ax12.fill_between(x=d[:,0], y1=wa-e_wa, y2=wa+e_wa, color='k', alpha=0.50)
-ax12.fill_between(x=d[22:,0], y1=waH-e_waH, y2=waH+e_waH, color='g', alpha=0.50)
-ax12.fill_between(x=d[8:17:,0], y1=waL-e_waL, y2=waL+e_waL, color='b', alpha=0.50)
+ax12.errorbar(x=d[:,0], y=d[:,6], xerr=d[:,1], yerr=d[:,7], fmt='o', markersize=5, ecolor='r', capthick=1, linewidth=1, color='r', markerfacecolor='none', label='Hardness Ratio')
+#ax12.fill_between(x=[d[0,0]-d[0,1],d[-1,0]+d[-1,1]], y1=wa-e_wa, y2=wa+e_wa, color='k', alpha=0.25)
+ax12.axhline(y=wa, color='k', dashes=[5,3], linewidth=1)
+#ax12.fill_between(x=d[22:,0], y1=waH-e_waH, y2=waH+e_waH, color='g', alpha=0.50)
+#ax12.fill_between(x=d[8:17:,0], y1=waL-e_waL, y2=waL+e_waL, color='b', alpha=0.50)
 ax12.axvline(d[17,0]-d[17,1], color='k', dashes=[5,3], linewidth=1)      # below is low state
 ax12.axvline(d[22,0]-d[22,1], color='k', dashes=[5,3], linewidth=1)     # above is high state
 ax12.text(.40,.8,'low',horizontalalignment='center',transform=ax12.transAxes)

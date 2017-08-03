@@ -22,7 +22,7 @@ plt.rc('text',usetex=True)
 # read in the qdp data files
 def qdp_read(filename):
     data = np.genfromtxt(filename, skip_header=3)
-    
+
     # create an array that lists all rows with NO in them
     new_set = []
     new_set.append(0)
@@ -30,7 +30,7 @@ def qdp_read(filename):
         if (math.isnan(data[i,0]) == 1):
             new_set.append(i)
     new_set.append(len(data))
-    
+
     # determine if the file being read in has residuals in it or not
     if (math.isnan(data[new_set[int(len(new_set)/2.)]+1,4]) == 1):
         n = int(len(new_set)/2.)
@@ -38,7 +38,7 @@ def qdp_read(filename):
     elif (math.isnan(data[new_set[int(len(new_set)/2.)]+1,4]) != 1):
         n = len(new_set)-1
         r = 0
-    
+
     # create a dictionary that stores each column according to its data set
     d = {}
     for i in range(0,n):
@@ -52,7 +52,7 @@ def qdp_read(filename):
         d["f{0}".format(x)]     =data[new_set[i]+1:new_set[i+1]-1,2]
         d["f_err{0}".format(x)] =data[new_set[i]+1:new_set[i+1]-1,3]
         d["m{0}".format(x)]     =data[new_set[i]+1:new_set[i+1]-1,4]
-            
+
     for i in range(n,len(new_set)-1):
         x = i+1-int(len(new_set)/2.)
         if (i == len(new_set)-2):
@@ -76,18 +76,18 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, xscale, yscale, 
         ax.set_xscale('log')
     if (yscale == 'log'):
         ax.set_ylabel('Normalized Counts (s$^{-1}$ keV$^{-1}$)')
-#        ax.set_ylabel('keV$^{2}$ (Photons cm$^{-2}$ s$^{-1}$ keV$^{-1}$)')   # use this when plotting eeuf 
+#        ax.set_ylabel('keV$^{2}$ (Photons cm$^{-2}$ s$^{-1}$ keV$^{-1}$)')   # use this when plotting eeuf
         ax.set_yscale('log')
     if (style == 'line'):
         ax.errorbar(x, y, xerr=x_error, yerr=y_error, ecolor=line_color, capthick=1, color=line_color, label=line_label)
     elif (style == 'marker'):
         ax.errorbar(x, y, xerr=x_error, yerr=y_error, fmt=mrkshp, markersize=0, ecolor=line_color, capthick=1, linewidth = 1, color=line_color, label=line_label, markerfacecolor='none')
-        
+
 #    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
     ax.set_xticks([5,6,7]) # choose which x locations to have ticks
     ax.set_xticklabels([5,6,7]) # set the labels to display at those ticks
     ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-    
+
     if (legyn == 1):
         plt.legend(loc=legloc, ncol=2, labelspacing=0.1, fontsize=16, handletextpad=0.1, fancybox=False, frameon=False)
 #        plt.legend(loc=legloc, labelspacing=0.1, fontsize=16)
@@ -126,7 +126,7 @@ dq1, sets, res = qdp_read('newswift/copl_2-10extrapolated.qdp') ; c_set = ['g','
 dq2, sets, res = qdp_read('newswift/copl+zgb_2-10extrapolated.qdp') ; c_set = ['g','r','m','1.0','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
 
-#### Plot up the data 
+#### Plot up the data
 #fig = plt.figure()
 #ax = fig.add_subplot(111)
 ##plt.grid(which='both',linestyle='-',color='0.7')
@@ -178,16 +178,16 @@ dq2, sets, res = qdp_read('newswift/copl+zgb_2-10extrapolated.qdp') ; c_set = ['
 #        ax.set_xticks([1,2,5,10]) # choose which x locations to have ticks
 #        ax.set_xticklabels([1,2,5,10]) # set the labels to display at those ticks
 #        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-#    
+#
 #    ax.set_xlim(min(dq["res_e1"])-0.03285,max(dq["res_e1"])+0.648)
 #    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
 #    ax.axhline(y=1.0, color='k', linestyle='--', linewidth=1)
-#    
+#
 ##    plt.savefig('../../LaTeX/IIIZw2/suzaku_hilo.png',bbox_inches='tight',dpi=300)
 ##plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/suzaku_hilo.png', bbox_inches='tight', dpi=300)
 
 
-##### Gridspec plotting 
+##### Gridspec plotting
 if (res == 1):
 #    fig = plt.figure()
 #    ax = fig.add_subplot(311)
@@ -198,7 +198,7 @@ if (res == 1):
     gs1.update(wspace=0, hspace=0)
     for i in range(0,sets):
         x = i+1
-        
+
         if (i == 0):
             shape = 'D'
         if (i == 1):
@@ -211,17 +211,17 @@ if (res == 1):
             shape = 's'
         if (i == 4):
             shape = 's'
-        
+
         ax = plt.subplot(gs1[0])
         plottertron(dq1["res_e{0}".format(x)], dq1["res_e_err{0}".format(x)], dq1["res{0}".format(x)], dq1["res_err{0}".format(x)], c_set[i], n_set[i], 'log', 'linear', 0, 3, 'marker', shape)
 #        plottertron(dq2["res_e{0}".format(x)], dq2["res_e_err{0}".format(x)], dq2["res{0}".format(x)], dq2["res_err{0}".format(x)], c_set[i], n_set[i], 'log', 'linear', 0, 3, 'marker', shape)
-        
+
         ax = plt.subplot(gs1[1])
         plottertron(dq1["res_e{0}".format(x)], dq1["res_e_err{0}".format(x)], dq1["res{0}".format(x)], dq1["res_err{0}".format(x)], c_set[i], n_set[i], 'log', 'linear', 0, 3, 'marker', shape)
 
         ax = plt.subplot(gs1[2])
         plottertron(dq2["res_e{0}".format(x)], dq2["res_e_err{0}".format(x)], dq2["res{0}".format(x)], dq2["res_err{0}".format(x)], c_set[i], n_set[i], 'log', 'linear', 0, 3, 'marker', shape)
-    
+
     for i in range(0,3):
         ax = plt.subplot(gs1[i])
 #        if (i==0):

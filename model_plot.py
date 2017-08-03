@@ -18,14 +18,14 @@ matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
 # read in the qdp data files
 def qdp_read(filename, NO):
     data = np.genfromtxt(filename)
-           
+
     NO = NO-2
     NO = int(NO)
     dat_x = data[:NO,0]
     dat_x_error = data[:NO,1]
     dat_y = data[:NO,2]
-    dat_y_error = data[:NO,3]  
-    
+    dat_y_error = data[:NO,3]
+
     mo = data[:NO,4]
 
     NO = NO+2
@@ -33,8 +33,8 @@ def qdp_read(filename, NO):
     res_x = data[NO:,0]
     res_x_error = data[NO:,1]
     res_y = data[NO:,2]
-    res_y_error = data[NO:,3]  
-    
+    res_y_error = data[NO:,3]
+
     return dat_x, dat_x_error, dat_y, dat_y_error, mo, res_x, res_x_error, res_y, res_y_error
 ####################################################################################################
 
@@ -42,14 +42,14 @@ def qdp_read(filename, NO):
 # read in the qdp data files
 def asca_read(filename, NO):
     data = np.genfromtxt(filename)
-           
+
     NO = NO-2
     NO = int(NO)
     dat_x = data[:NO,0]
     dat_x_error = data[:NO,1]
     dat_y = data[:NO,2]
-    dat_y_error = data[:NO,3]  
-    
+    dat_y_error = data[:NO,3]
+
     mo = data[:NO,4]
 
     NO = NO+2
@@ -57,8 +57,8 @@ def asca_read(filename, NO):
     res_x = data[NO:,0]
     res_x_error = data[NO:,1]
     res_y = data[NO:,2]
-    res_y_error = data[NO:,3]  
-    
+    res_y_error = data[NO:,3]
+
     return dat_x, dat_x_error, dat_y, dat_y_error, mo, res_x, res_x_error, res_y, res_y_error
 ####################################################################################################
 

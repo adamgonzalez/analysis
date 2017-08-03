@@ -54,7 +54,7 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, xscale, yscale, 
         ax.set_xscale('log')
     if (yscale == 'log'):
 #        ax.set_ylabel('Normalized Counts (s$^{-1}$ keV$^{-1}$)')
-#        ax.set_ylabel('keV$^{2}$ (Photons cm$^{-2}$ s$^{-1}$ keV$^{-1}$)')   # use this when plotting eeuf 
+#        ax.set_ylabel('keV$^{2}$ (Photons cm$^{-2}$ s$^{-1}$ keV$^{-1}$)')   # use this when plotting eeuf
         ax.set_yscale('log')
     if (style == 'line'):
         ax.errorbar(x, y, xerr=x_error, yerr=y_error, ecolor=line_color, capthick=1, color=line_color, label=line_label)
@@ -72,7 +72,8 @@ def plottertron(x, x_error, y, y_error, line_color, line_label, xscale, yscale, 
 
 ### Read in the data from the .qdp files made by wdata in iplot on XSPEC
 xmm = np.genfromtxt('0127110201pn_lccor_300-10000_1000s.qdp', skip_header=3) # either one data point at 0.2531 OR multiply each by 0.06815 , MJD start 51728.0 end 51729.0
-suz = np.genfromtxt('n066l_xis0_comb_03-10_5760s.qdp', skip_header=3)       # either one data point at 0.3077 OR multiply each by 0.5094 , MJD start 55728.0
+#suz = np.genfromtxt('n066l_xis0_comb_03-10_5760s.qdp', skip_header=3)       # either one data point at 0.3077 OR multiply each by 0.5094 , MJD start 55728.0
+suz = np.genfromtxt('xis0xis3_03-10_5760s.qdp', skip_header=3)      # new data set
 swift = np.genfromtxt('XRT.lc', skip_header=2)
 
 ##print xmm[0,0]
@@ -98,12 +99,12 @@ swift = np.genfromtxt('XRT.lc', skip_header=2)
 ### Doing some binning things
 #xmmbin = np.zeros(5)
 #xmmbin[0], xmmbin[1], xmmbin[2], xmmbin[3], xmmbin[4] = np.average(xmmmjd[:,0]), np.average(xmmmjd[:,1]), np.average(xmmmjd[:,2]), error_avg(xmmmjd[:,2],xmmmjd[:,3]), np.average(xmmmjd[:,4])
-#    
+#
 #suzbin = np.zeros(5)
 #suzbin[0], suzbin[1], suzbin[2], suzbin[3], suzbin[4] = np.average(suzmjd[:,0]), np.average(suzmjd[:,1]), np.average(suzmjd[:,2]), error_avg(suzmjd[:,2],suzmjd[:,3]), np.average(suzmjd[:,4])
 #
 #lower = [0,8,12,15,16,26,29,31,32,33,35,36]
-#upper = [8,12,15,15,26,29,31,31,32,35,35,38] 
+#upper = [8,12,15,15,26,29,31,31,32,35,35,38]
 #w, h = 5, 12
 #swiftbin = [[0 for x in range(w)] for y in range(h)]
 #swiftbin = np.array(swiftbin,dtype=float)
@@ -125,7 +126,7 @@ swift = np.genfromtxt('XRT.lc', skip_header=2)
 #print 'Suzaku avg = ', np.average(suz[:,2]), ' +/- ', error_avg(suz[:,2],suz[:,3])
 #print 'Swift avg = ', np.average(swiftbin[:,2]), ' +/- ', error_avg(swiftbin[:,2],swiftbin[:,3])
 #
-##### Plot up the data 
+##### Plot up the data
 #fig = plt.figure()
 #ax = fig.add_subplot(111)
 #
@@ -236,7 +237,7 @@ ax12.axvline(suz[17,0]-suz[17,1],color='k',linestyle='-',linewidth=1)
 ax12.axvline(suz[22,0]-suz[22,1],color='k',linestyle='-',linewidth=1)
 ax12.errorbar(x=suz[:,0], y=suz[:,2], xerr=suz[:,1], yerr=suz[:,3], fmt='o', markersize=0, ecolor='r', capthick=1, linewidth=1, color='r', label='Suzaku', markerfacecolor='none')
 ax12.set_xlim(-suz[0,1],suz[29,0]+suz[29,1])
-ax12.set_ylim(0.0,0.75) # lower bound 0.20
+ax12.set_ylim(0.0,0.75*2) # lower bound 0.20
 ax12.tick_params(axis='both', which='both', direction='in', top='on', right='on')
 #ax12.set_xlabel('Time (s)')
 #ax12.set_ylabel('Counts / sec ($0.3 - 10$ keV)')
