@@ -57,8 +57,8 @@ def qdp_read(filename):
 # Plot x and y with labels (trying to do it)
 def plottertron(x, x_error, y, y_error, line_color, line_label, legyn, legloc, style, mrkshp):
     ax.set_xlabel('Energy (keV)')
-#    ax.set_ylabel('Ratio')
-    ax.set_ylabel('(High - Low) / Power Law')
+    ax.set_ylabel('Ratio')
+#    ax.set_ylabel('(High - Low) / Power Law')
     ax.set_xscale('log')
 
 #    ax.set_yscale('log')
@@ -118,106 +118,290 @@ os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501/newswift/rebinned_Jul
 #dq, sets, res = qdp_read('xmm+suz+swift_copl+zgN_Esigfree_broadband.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
 #### suz hilo fit
-dq, sets, res = qdp_read('suz_hilo_res.qdp') ; c_set = ['r'] ; n_set = ['Suzaku']
+#dq, sets, res = qdp_read('suz_hilo_res.qdp') ; c_set = ['r'] ; n_set = ['Suzaku']
 
 #### broadband copl+zg fit
 #dq1, sets, res = qdp_read('xmm+suz+swift_copl+zgN_Esigfree_broadband_fit.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 #dq2, sets, res = qdp_read('xmm+suz+swift_copl+zgN+bb_Esigfree_broadband_fit.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
 #### broadband physical fits
-#dq1, sets, res = qdp_read('xmm+suz+swift_copl+reflionx_cold.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
-#dq2, sets, res = qdp_read('xmm+suz+swift_copl+kblurXreflionx_blur.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
+dq1, sets, res = qdp_read('xmm+suz+swift_copl+reflionx_cold.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
+dq2, sets, res = qdp_read('xmm+suz+swift_copl+kblurXreflionx_blur.qdp') ; c_set = ['g','r','m','b','c'] ; n_set = ['XMM','Suzaku','PIN','Swift','BAT']
 
 
 
-### Plot up the data po0
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
-for i in range(0,sets):
-    x = i+1
-    if (i == 0):
-        shape = 'd'
-    if (i == 1):
-        shape = 'o'
-    if (i == 2) and (sets < 4):
-        shape = 's'
-    if (i == 2) and (sets > 4):
-        shape = 'o'
-    if (i == 3):
-        shape = 's'
-    if (i == 4):
-        shape = 's'
-    plottertron(dq["e{0}".format(x)], dq["e_err{0}".format(x)], dq["f{0}".format(x)], dq["f_err{0}".format(x)], c_set[i], n_set[i], 0, 2, 'marker', shape)
-#    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-    ax.set_xticks([1,10]) # choose which x locations to have ticks
-    ax.set_xticklabels([1,10]) # set the labels to display at those ticks
-    ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-    ax.set_xlim(0.7,10.0)
-#    ax.set_ylim(0.5,2.5)
-    ax.set_ylim(0.3,1.7)
-    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
-
-#plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/suzaku_hilo.png',bbox_inches='tight',dpi=300)
+#### Plot up the data po0
+#fig = plt.figure()
+#ax = fig.add_subplot(111)
+#ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#for i in range(0,sets):
+#    x = i+1
+#    if (i == 0):
+#        shape = 'd'
+#    if (i == 1):
+#        shape = 'o'
+#    if (i == 2) and (sets < 4):
+#        shape = 's'
+#    if (i == 2) and (sets > 4):
+#        shape = 'o'
+#    if (i == 3):
+#        shape = 's'
+#    if (i == 4):
+#        shape = 's'
+#    plottertron(dq["e{0}".format(x)], dq["e_err{0}".format(x)], dq["f{0}".format(x)], dq["f_err{0}".format(x)], c_set[i], n_set[i], 0, 2, 'marker', shape)
+##    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+#    ax.set_xticks([1,10]) # choose which x locations to have ticks
+#    ax.set_xticklabels([1,10]) # set the labels to display at those ticks
+#    ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#    ax.set_xlim(0.7,10.0)
+##    ax.set_ylim(0.5,2.5)
+#    ax.set_ylim(0.3,1.7)
+#    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#
+##plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/suzaku_hilo.png',bbox_inches='tight',dpi=300)
 
 
 ###### Gridspec plotting
-#if (res == 0):
-#    plt.figure()
-#    gs1 = gridspec.GridSpec(2,1)
-#    gs1.update(wspace=0, hspace=0)
-#    for i in range(0,sets):
-#        x = i+1
+#plt.figure()
+#gs1 = gridspec.GridSpec(2,1)
+#gs1.update(wspace=0, hspace=0)
+#for i in range(0,sets):
+#    x = i+1
 #
-#        if (i == 0):
-#            shape = 'd'
-#        if (i == 1):
-#            shape = 'o'
-#        if (i == 2) and (sets < 4):
-#            shape = 's'
-#        if (i == 2) and (sets > 4):
-#            shape = 'o'
-#        if (i == 3):
-#            shape = 's'
-#        if (i == 4):
-#            shape = 's'
+#    if (i == 0):
+#        shape = 'd'
+#    if (i == 1):
+#        shape = 'o'
+#    if (i == 2) and (sets < 4):
+#        shape = 's'
+#    if (i == 2) and (sets > 4):
+#        shape = 'o'
+#    if (i == 3):
+#        shape = 's'
+#    if (i == 4):
+#        shape = 's'
 #
-#        ax = plt.subplot(gs1[0])
-#        plottertron(dq1["e{0}".format(x)], dq1["e_err{0}".format(x)], dq1["f{0}".format(x)], dq1["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
+#    ax = plt.subplot(gs1[0])
+#    plottertron(dq1["e{0}".format(x)], dq1["e_err{0}".format(x)], dq1["f{0}".format(x)], dq1["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
 ##        ax.set_xscale('log')
 ##        ax.fill_between(x=dq1["e{0}".format(x)], y1=dq1["f{0}".format(x)]-dq1["f_err{0}".format(x)], y2=dq1["f{0}".format(x)]+dq1["f_err{0}".format(x)], color=c_set[i], label=n_set[i], alpha=0.75)
 ##        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-#        ax.set_xticks([2,5,10]) # choose which x locations to have ticks
-#        ax.set_xticklabels([2,5,10]) # set the labels to display at those ticks
-#        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-#        ax.set_xlim(0.3,150.)
-#        ax.set_ylim(0.4,1.7)
+#    ax.set_xticks([2,5,10]) # choose which x locations to have ticks
+#    ax.set_xticklabels([2,5,10]) # set the labels to display at those ticks
+#    ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#    ax.set_xlim(0.3,150.)
+#    ax.set_ylim(0.4,1.7)
 ##        ax.set_xlim(2.,10.)
 ##        ax.set_ylim(0.6,1.4)
 #
-#        ax = plt.subplot(gs1[1])
-#        plottertron(dq2["e{0}".format(x)], dq2["e_err{0}".format(x)], dq2["f{0}".format(x)], dq2["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
+#    ax = plt.subplot(gs1[1])
+#    plottertron(dq2["e{0}".format(x)], dq2["e_err{0}".format(x)], dq2["f{0}".format(x)], dq2["f_err{0}".format(x)], c_set[i], n_set[i], 0, 3, 'marker', shape)
 ##        ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-#        ax.set_xticks([1,10,100]) # choose which x locations to have ticks
-#        ax.set_xticklabels([1,10,100]) # set the labels to display at those ticks
-#        ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
-#        ax.set_xlim(0.3,150.)
-#        ax.set_ylim(0.4,1.7)
+#    ax.set_xticks([1,10,100]) # choose which x locations to have ticks
+#    ax.set_xticklabels([1,10,100]) # set the labels to display at those ticks
+#    ax.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#    ax.set_xlim(0.3,150.)
+#    ax.set_ylim(0.4,1.7)
 ##        ax.set_xlim(2.,10.)
 ##        ax.set_ylim(0.6,1.4)
 #
-#    for i in range(0,2):
-#        ax = plt.subplot(gs1[i])
-#        if (i == 0):
-#            ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
-#        elif (i == 1):
-#            ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
+#for i in range(0,2):
+#    ax = plt.subplot(gs1[i])
+#    if (i == 0):
+#        ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
+#    elif (i == 1):
+#        ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
 #
-#        ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
-#        if (i != 1):
-#            ax.set_xticklabels([])
-#        ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
-#        ax.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#    ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#    if (i != 1):
+#        ax.set_xticklabels([])
+#    ax.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#    ax.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
 #
 #
 ##plt.savefig('/Users/agonzalez/Dropbox/Graduate/PhD/IIIZw2Paper2017/physical_broadband_fits.png', bbox_inches='tight', dpi=300)
+##plt.savefig('/Users/agonzalez/Desktop/physical_broadband_fits_paper.png', bbox_inches='tight', dpi=300)
+
+
+
+
+###### MEGA gridspec plotting
+#plt.figure()
+#plt.subplot(111)
+#gs1 = gridspec.GridSpec(6,1)
+#gs1.update(wspace=0, hspace=0)
+#
+#
+#ax1, ax2, ax3, ax4, ax5, ax6 = plt.subplot(gs1[0]), plt.subplot(gs1[1]), plt.subplot(gs1[2]), plt.subplot(gs1[3]), plt.subplot(gs1[4]), plt.subplot(gs1[5])
+#
+#### plot the cold distant reflection residuals
+#c=1
+#ax1.set_xscale('log')
+#ax1.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax1.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax1.errorbar(x=dq1["e{0}".format(c)], y=dq1["f{0}".format(c)], xerr=dq1["e_err{0}".format(c)], yerr=dq1["f_err{0}".format(c)], ecolor='g', color='g', fmt='d', markerfacecolor='none', linewidth=1.)
+#ax1.set_xlim(0.3,150.)
+#ax1.set_ylim(0.4,1.6)
+#ax1.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#
+#
+#c=2
+#ax3.set_xscale('log')
+#ax3.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax3.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax3.errorbar(x=dq1["e{0}".format(c)], y=dq1["f{0}".format(c)], xerr=dq1["e_err{0}".format(c)], yerr=dq1["f_err{0}".format(c)], ecolor='r', color='r', fmt='o', markerfacecolor='none', linewidth=1.)
+#c=3
+#ax3.errorbar(x=dq1["e{0}".format(c)], y=dq1["f{0}".format(c)], xerr=dq1["e_err{0}".format(c)], yerr=dq1["f_err{0}".format(c)], ecolor='m', color='m', fmt='o', markerfacecolor='none', linewidth=1.)
+#ax3.set_xlim(0.3,150.)
+#ax3.set_ylim(0.4,1.6)
+#ax3.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#
+#
+#c=4
+#ax5.set_xscale('log')
+#ax5.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax5.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax5.errorbar(x=dq1["e{0}".format(c)], y=dq1["f{0}".format(c)], xerr=dq1["e_err{0}".format(c)], yerr=dq1["f_err{0}".format(c)], ecolor='b', color='b', fmt='s', markerfacecolor='none', linewidth=1.)
+#c=5
+#ax5.errorbar(x=dq1["e{0}".format(c)], y=dq1["f{0}".format(c)], xerr=dq1["e_err{0}".format(c)], yerr=dq1["f_err{0}".format(c)], ecolor='c', color='c', fmt='s', markerfacecolor='none', linewidth=1.)
+#ax5.set_xlim(0.3,150.)
+#ax5.set_ylim(0.4,1.6)
+#ax5.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#
+#
+#### plot the blurred ionised reflection residuals
+#c=1
+#ax2.set_xscale('log')
+#ax2.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax2.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax2.errorbar(x=dq2["e{0}".format(c)], y=dq2["f{0}".format(c)], xerr=dq2["e_err{0}".format(c)], yerr=dq2["f_err{0}".format(c)], ecolor='g', color='g', fmt='d', markerfacecolor='none', linewidth=1.)
+#ax2.set_xlim(0.3,150.)
+#ax2.set_ylim(0.4,1.6)
+#ax2.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#ax2.yaxis.tick_right()
+#
+#
+#c=2
+#ax4.set_xscale('log')
+#ax4.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax4.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax4.errorbar(x=dq2["e{0}".format(c)], y=dq2["f{0}".format(c)], xerr=dq2["e_err{0}".format(c)], yerr=dq2["f_err{0}".format(c)], ecolor='r', color='r', fmt='o', markerfacecolor='none', linewidth=1.)
+#c=3
+#ax4.errorbar(x=dq2["e{0}".format(c)], y=dq2["f{0}".format(c)], xerr=dq2["e_err{0}".format(c)], yerr=dq2["f_err{0}".format(c)], ecolor='m', color='m', fmt='o', markerfacecolor='none', linewidth=1.)
+#ax4.set_xlim(0.3,150.)
+#ax4.set_ylim(0.4,1.6)
+#ax4.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#ax4.yaxis.tick_right()
+#
+#
+#c=4
+#ax6.set_xscale('log')
+#ax6.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+#ax6.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+#ax6.errorbar(x=dq2["e{0}".format(c)], y=dq2["f{0}".format(c)], xerr=dq2["e_err{0}".format(c)], yerr=dq2["f_err{0}".format(c)], ecolor='b', color='b', fmt='s', markerfacecolor='none', linewidth=1.)
+#c=5
+#ax6.errorbar(x=dq2["e{0}".format(c)], y=dq2["f{0}".format(c)], xerr=dq2["e_err{0}".format(c)], yerr=dq2["f_err{0}".format(c)], ecolor='c', color='c', fmt='s', markerfacecolor='none', linewidth=1.)
+#ax6.set_xlim(0.3,150.)
+#ax6.set_ylim(0.4,1.6)
+#ax6.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+#ax6.yaxis.tick_right()
+#ax6.set_xticks([1,10,100]) # choose which x locations to have ticks
+#ax6.set_xticklabels([1,10,100]) # set the labels to display at those ticks
+#ax6.get_xaxis().get_minor_formatter().labelOnlyBase = True
+#
+#
+#ax6.set_xlabel('Energy (keV)')
+#
+#
+##for i in range(0,2):
+##ax = plt.subplot(gs1[i])
+##if (i == 0):
+##    ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
+##elif (i == 1):
+##    ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
+#
+#
+##plt.savefig('/Users/agonzalez/Desktop/physical_broadband_fits_6x1.png', bbox_inches='tight', dpi=300)
+
+
+
+
+##### MEGA gridspec plotting
+plt.figure()
+plt.subplot(111)
+gs1 = gridspec.GridSpec(3,1)
+gs1.update(wspace=0, hspace=0)
+
+
+ax1, ax2, ax3 = plt.subplot(gs1[0]), plt.subplot(gs1[1]), plt.subplot(gs1[2])
+### plot the cold distant reflection residuals
+c=1
+ax1.set_xscale('log')
+ax1.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+ax1.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+ax1.fill_between(x=dq1["e{0}".format(c)], y1=dq1["f{0}".format(c)]-dq1["f_err{0}".format(c)], y2=dq1["f{0}".format(c)]+dq1["f_err{0}".format(c)], facecolor='g', edgecolor='none', linewidth=1.0, alpha=0.5)
+
+
+c=2
+ax2.set_xscale('log')
+ax2.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+ax2.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+ax2.fill_between(x=dq1["e{0}".format(c)], y1=dq1["f{0}".format(c)]-dq1["f_err{0}".format(c)], y2=dq1["f{0}".format(c)]+dq1["f_err{0}".format(c)], facecolor='r', edgecolor='none', linewidth=1.0, alpha=0.5)
+c=3
+ax2.fill_between(x=dq1["e{0}".format(c)], y1=dq1["f{0}".format(c)]-dq1["f_err{0}".format(c)], y2=dq1["f{0}".format(c)]+dq1["f_err{0}".format(c)], facecolor='m', edgecolor='none', linewidth=1.0, alpha=0.5)
+
+
+c=4
+ax3.set_xscale('log')
+ax3.axhline(y=1.0, color='k', dashes=[5,3], linewidth=1.0)
+ax3.axvline(x=6.4/(1.+0.089338), color='k', dashes=[5,3], linewidth=1.0)
+ax3.fill_between(x=dq1["e{0}".format(c)], y1=dq1["f{0}".format(c)]-dq1["f_err{0}".format(c)], y2=dq1["f{0}".format(c)]+dq1["f_err{0}".format(c)], facecolor='b', edgecolor='none', linewidth=1.0, alpha=0.5)
+c=5
+ax3.fill_between(x=dq1["e{0}".format(c)], y1=dq1["f{0}".format(c)]-dq1["f_err{0}".format(c)], y2=dq1["f{0}".format(c)]+dq1["f_err{0}".format(c)], facecolor='c', edgecolor='none', linewidth=1.0, alpha=0.5)
+
+
+
+### plot the blurred ionised reflection residuals
+c=1
+ax1.set_xscale('log')
+ax1.fill_between(x=dq2["e{0}".format(c)], y1=dq2["f{0}".format(c)]-dq2["f_err{0}".format(c)], y2=dq2["f{0}".format(c)]+dq2["f_err{0}".format(c)], facecolor='g', edgecolor='none', linewidth=1.0, alpha=0.5)
+ax1.set_xlim(0.3,150.)
+ax1.set_ylim(0.4,1.6)
+ax1.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+
+
+c=2
+ax2.set_xscale('log')
+ax2.fill_between(x=dq2["e{0}".format(c)], y1=dq2["f{0}".format(c)]-dq2["f_err{0}".format(c)], y2=dq2["f{0}".format(c)]+dq2["f_err{0}".format(c)], facecolor='r', edgecolor='none', linewidth=1.0, alpha=0.5)
+c=3
+ax2.fill_between(x=dq2["e{0}".format(c)], y1=dq2["f{0}".format(c)]-dq2["f_err{0}".format(c)], y2=dq2["f{0}".format(c)]+dq2["f_err{0}".format(c)], facecolor='m', edgecolor='none', linewidth=1.0, alpha=0.5)
+ax2.set_xlim(0.3,150.)
+ax2.set_ylim(0.4,1.6)
+ax2.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+
+
+c=4
+ax3.set_xscale('log')
+ax3.fill_between(x=dq2["e{0}".format(c)], y1=dq2["f{0}".format(c)]-dq2["f_err{0}".format(c)], y2=dq2["f{0}".format(c)]+dq2["f_err{0}".format(c)], facecolor='b', edgecolor='none', linewidth=1.0, alpha=0.5)
+c=5
+ax3.fill_between(x=dq2["e{0}".format(c)], y1=dq2["f{0}".format(c)]-dq2["f_err{0}".format(c)], y2=dq2["f{0}".format(c)]+dq2["f_err{0}".format(c)], facecolor='c', edgecolor='none', linewidth=1.0, alpha=0.5)
+ax3.set_xlim(0.3,150.)
+ax3.set_ylim(0.4,1.6)
+ax3.tick_params(axis='both', which='both', direction='in', top='on', right='on')
+ax3.set_xticks([1,10,100]) # choose which x locations to have ticks
+ax3.set_xticklabels([1,10,100]) # set the labels to display at those ticks
+ax3.get_xaxis().get_minor_formatter().labelOnlyBase = True
+
+
+ax3.set_xlabel('Energy (keV)')
+
+
+#for i in range(0,2):
+#ax = plt.subplot(gs1[i])
+#if (i == 0):
+#    ax.text(.25,.1,'cold distant',horizontalalignment='center',transform=ax.transAxes)
+#elif (i == 1):
+#    ax.text(.25,.1,'blurred ionised',horizontalalignment='center',transform=ax.transAxes)
+
+
+#plt.savefig('/Users/agonzalez/Desktop/physical_broadband_fits_3x1.png', bbox_inches='tight', dpi=300)
