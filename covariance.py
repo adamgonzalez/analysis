@@ -42,7 +42,6 @@ def data_cleaner(d_t_raw, d_r_raw, d_e_raw):
     return d_t, d_r, d_e, n, a_r
 ####################################################################################################
 
-
 ####################################################################################################
 # Open the fits file that contains the light curve
 def fits_open(filename):
@@ -55,7 +54,6 @@ def fits_open(filename):
 
     return t_raw, r_raw, e_raw
 ####################################################################################################
-
 
 ####################################################################################################
 # Compute the PSD
@@ -80,33 +78,29 @@ def psd_calc(time, rate):
     return freq, dfreq, PSD
 ####################################################################################################
 
-
 ####################################################################################################
 # Binner
 def binner(bins, x_data, y_data):
-    bin_counts = np.zeros(len(bins))
-    binned_y_data = np.zeros(len(bins))
-
-    bin_counts2 = np.zeros(len(bins))
-    binned_y_data2 = np.zeros(len(bins))
+    n = len(bins)-1
+    bin_counts, binned_y_data, ssq, s = np.zeros(n), np.zeros(n), np.zeros(n), np.zeros(n)
 
     for j in range (0, len(y_data)):
-        for i in range (0, len(bins)-1):
+        for i in range (0, n):
             if (bins[i] <= x_data[j] <= bins[i+1]):
                 bin_counts[i] += 1
                 binned_y_data[i] += y_data[j]
 
-    for i in range(0, len(bins)):
-        if (bin_counts[i] == 0):
-            bin_counts[i] = 1
+    binned_y_data = binned_y_data / bin_counts
 
-    for i in range(0, len(bins)):
-        bin_counts2[i] = bin_counts[i]
-        binned_y_data2[i] = binned_y_data[i]
+    for j in range (0, len(y_data)):
+        for i in range (0, n):
+            if (bins[i] <= x_data[j] <= bins[i+1]):
+                ssq[i] += (y_data[j]-binned_y_data[i])**2.0
+    ssq = ssq / (bin_counts-1.)
+    s = np.sqrt(ssq/bin_counts)
+    # s = binned_y_data / np.sqrt(bin_counts)  # I think what Pavg / sqrt(KM) in Uttley et al. 2014 -> turns out to be essentially the same as above
 
-    binned_y_data2 = binned_y_data2 / bin_counts2
-
-    return binned_y_data2, bin_counts2
+    return binned_y_data, bin_counts, s
 ####################################################################################################
 
 
@@ -152,7 +146,6 @@ for RUN in range (0,n_RUNS):
     bg_t_raw = bg_t_raw[:1051] ; bg_r_raw = bg_r_raw[:1051] ; bg_e_raw = bg_e_raw[:1051]
     lc_r_raw = lc_r_raw - min(lc_r_raw)
 
-
     # remove any NaN counts and get average count rate
     lc_t, lc_r, lc_e, idx, avg_rate = data_cleaner(lc_t_raw, lc_r_raw, lc_e_raw)
     bg_t, bg_r, bg_e, bg_idx, avg_bg_rate = data_cleaner(bg_t_raw, bg_r_raw, bg_e_raw)
@@ -161,6 +154,7 @@ for RUN in range (0,n_RUNS):
     lc_r[906] = (lc_r[905] + lc_r[907]) / 2.0
     lc_e[906] = (lc_e[905] + lc_e[907]) / 2.0
 
+    # Plot the light curve
     # plt.figure(1)
     # plt.fill_between(x=lc_t, y1=lc_r-lc_e, y2=lc_r+lc_e, color='r', alpha=0.75)
     # plt.fill_between(x=bg_t, y1=bg_r-bg_e, y2=bg_r+bg_e, color='b', alpha=0.75)
@@ -172,14 +166,26 @@ for RUN in range (0,n_RUNS):
     frq, df, PSD = psd_calc(lc_t, lc_r)
 
     # bin up the PSD
-    frq_bins = np.logspace(np.log10(6e-5), np.log10(frq[-1]), 20)
-    PSD_binned, PSD_binned_counts = binner(frq_bins, frq, PSD)
+    n_bins = 10
+    frq_bins = np.logspace(np.log10(frq[1]), np.log10(frq[-1]), n_bins)
+    PSD_binned, PSD_binned_counts, PSD_binned_error = binner(frq_bins, frq, PSD)
+    avg_frq_bins = np.zeros(n_bins-1)
+    avg_frq_bins_err = np.zeros(n_bins-1)
+    for i in range (0,n_bins-1):
+        avg_frq_bins[i] = (frq_bins[i+1]+frq_bins[i])/2.
+        avg_frq_bins_err[i] = frq_bins[i+1] - avg_frq_bins[i]
 
+    # Plot the raw and binned up PSD
     plt.figure(2)
     plt.xscale('log') ; plt.yscale('log')
     plt.scatter(x=frq[1:], y=PSD[1:], c='r', marker='o', alpha=0.75)
-    plt.scatter(x=frq_bins[:-1], y=PSD_binned[:-1], c='k', marker='o', alpha=0.75)
+    plt.axvline(x=frq[-1], color='k', dashes=[5,3], linewidth=1.0)
+    plt.errorbar(x=avg_frq_bins, y=PSD_binned, yerr=PSD_binned_error, fmt='o', markersize=5, color='k', ecolor='k', capthick=0, linewidth=1.0, alpha=1.0)
+    plt.step(x=avg_frq_bins, y=PSD_binned, color='k', linewidth=1.0, where='mid')
+    plt.xlabel('Frequency (Hz)') ; plt.ylabel('Power (Hz$^{-1}$)')
+    # plt.savefig('/Users/agonzalez/Desktop/step_plot.png', bbox_inches='tight', dpi=300)
     plt.show()
+
 
 # #    plottertron(lc_t, lc_r, lc_e, 'Time (s)', 'Count Rate (ct/s)', 0, 'b', '265')
 #
