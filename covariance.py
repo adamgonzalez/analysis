@@ -17,7 +17,32 @@ from astropy.io import fits
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1
 plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
 
+
+####################################################################################################
+# Open the fits file that contains the light curve
+def file_opener(filename):
+    with open(filename,'r') as data_file:
+        names = [line.rstrip('\n') for line in data_file]
+    data_file.close()
+    number = len(names)
+
+    return names, number
+####################################################################################################
+
+####################################################################################################
+# Open the fits file that contains the light curve
+def fits_open(filename):
+    fitsfile = fits.open(filename)
+    data = fitsfile[1].data
+    fitsfile.close()
+    t_raw = data.field('TIME') ; t_raw = t_raw - t_raw[0]
+    r_raw = data.field('RATE')
+    e_raw = data.field('ERROR')
+
+    return t_raw, r_raw, e_raw
+####################################################################################################
 
 ####################################################################################################
 # Compute the avg count rate of a file and get rid of any NaN counts
@@ -40,19 +65,6 @@ def data_cleaner(d_t_raw, d_r_raw, d_e_raw):
     a_r = np.average(d_r)
 
     return d_t, d_r, d_e, n, a_r
-####################################################################################################
-
-####################################################################################################
-# Open the fits file that contains the light curve
-def fits_open(filename):
-    fitsfile = fits.open(filename)
-    data = fitsfile[1].data
-    fitsfile.close()
-    t_raw = data.field('TIME') ; t_raw = t_raw - t_raw[0]
-    r_raw = data.field('RATE')
-    e_raw = data.field('ERROR')
-
-    return t_raw, r_raw, e_raw
 ####################################################################################################
 
 ####################################################################################################
@@ -104,19 +116,17 @@ def binner(bins, x_data, y_data):
 ####################################################################################################
 
 
-os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk766/265_May2017")
+# os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk766/265_May2017")
+# # open the light curve filename list
+# lc_fnames, n_lc = file_opener('265_lccor_list.txt')
+# # open the background filename list
+# bg_fnames, n_bg = file_opener('265_bgraw_list.txt')
 
+os.chdir("/Users/agonzalez/Documents/Research/Data/IZw1")
 # open the light curve filename list
-with open('265_lccor_list.txt','r') as lcfile:
-    lc_fnames = [line.rstrip('\n') for line in lcfile]
-lcfile.close()
-n_lc = len(lc_fnames)
-
+lc_fnames, n_lc = file_opener('2768/lc_covCI_2768_600.txt')
 # open the background filename list
-with open('265_bgraw_list.txt','r') as bgfile:
-    bg_fnames = [line.rstrip('\n') for line in bgfile]
-bgfile.close()
-n_bg = len(bg_fnames)
+bg_fnames, n_bg = file_opener('2768/bg_covCI_2768_600.txt')
 
 # just a sanity check
 if (n_lc == n_bg):
@@ -178,13 +188,13 @@ for RUN in range (0,n_RUNS):
     # Plot the raw and binned up PSD
     plt.figure(2)
     plt.xscale('log') ; plt.yscale('log')
-    plt.scatter(x=frq[1:], y=PSD[1:], c='r', marker='o', alpha=0.75)
-    plt.axvline(x=frq[-1], color='k', dashes=[5,3], linewidth=1.0)
+    # plt.scatter(x=frq[1:], y=PSD[1:], c='r', marker='o', alpha=0.75)
+    # plt.axvline(x=frq[-1], color='k', dashes=[5,3], linewidth=1.0)
     plt.errorbar(x=avg_frq_bins, y=PSD_binned, yerr=PSD_binned_error, fmt='o', markersize=5, color='k', ecolor='k', capthick=0, linewidth=1.0, alpha=1.0)
     plt.step(x=avg_frq_bins, y=PSD_binned, color='k', linewidth=1.0, where='mid')
     plt.xlabel('Frequency (Hz)') ; plt.ylabel('Power (Hz$^{-1}$)')
     # plt.savefig('/Users/agonzalez/Desktop/step_plot.png', bbox_inches='tight', dpi=300)
-    plt.show()
+plt.show()
 
 
 # #    plottertron(lc_t, lc_r, lc_e, 'Time (s)', 'Count Rate (ct/s)', 0, 'b', '265')

@@ -13,8 +13,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 from astropy.io import fits
 matplotlib.rcParams.update({'font.size': 18})
-matplotlib.rcParams['axes.linewidth'] = 1 
-                   
+matplotlib.rcParams['axes.linewidth'] = 1
+
 # Function to compute the average count rate of a file (light curve or background)
 def data_cleaner(d_t_raw, d_r_raw, d_e_raw):
     n = 0
@@ -35,69 +35,69 @@ def data_cleaner(d_t_raw, d_r_raw, d_e_raw):
     a_r = np.average(d_r)
     return d_t, d_r, d_e, n, a_r
 
-os.chdir("/Users/agonzalez/Documents/Research/Data/Zwicky1")
+os.chdir("/Users/agonzalez/Documents/Research/Data/IZw1")
 
 #pic = '2769_COVvE_603.png'
 #     ORBIT 2768
-with open(name='2768/COV_CI/lc_covCI_2768_600.txt',mode='r') as lcfile:
-#with open('2768/COV_CI/lc_covCI_2768_601.txt','r') as lcfile:
-#with open('2768/COV_CI/lc_covCI_2768_602.txt','r') as lcfile:
-#with open('2768/COV_CI/lc_covCI_2768_603.txt','r') as lcfile:
-#with open('2768/COV_CI/lc_covCI_2768_604.txt','r') as lcfile:
+with open(name='2768/lc_covCI_2768_600.txt',mode='r') as lcfile:
+#with open('2768/covariance_lists/lc_covCI_2768_601.txt','r') as lcfile:
+#with open('2768/covariance_lists/lc_covCI_2768_602.txt','r') as lcfile:
+#with open('2768/covariance_lists/lc_covCI_2768_603.txt','r') as lcfile:
+#with open('2768/covariance_lists/lc_covCI_2768_604.txt','r') as lcfile:
     #     ORBIT 2769
-#with open('2769/COV_CI/lc_covCI_2769_600.txt','r') as lcfile:
-#with open('2769/COV_CI/lc_covCI_2769_601.txt','r') as lcfile:
-#with open('2769/COV_CI/lc_covCI_2769_602.txt','r') as lcfile:
-#with open('2769/COV_CI/lc_covCI_2769_603.txt','r') as lcfile:
-#with open('2769/COV_CI/lc_covCI_2769_604.txt','r') as lcfile:
+#with open('2769/covariance_lists/lc_covCI_2769_600.txt','r') as lcfile:
+#with open('2769/covariance_lists/lc_covCI_2769_601.txt','r') as lcfile:
+#with open('2769/covariance_lists/lc_covCI_2769_602.txt','r') as lcfile:
+#with open('2769/covariance_lists/lc_covCI_2769_603.txt','r') as lcfile:
+#with open('2769/covariance_lists/lc_covCI_2769_604.txt','r') as lcfile:
     lc_fnames = [line.rstrip('\n') for line in lcfile]
 lcfile.close()
 n_lc = len(lc_fnames)
 
 #     ORBIT 2768
-with open('2768/COV_CI/lcref_covCI_2768_600.txt','r') as reffile:
-#with open('2768/COV_CI/lcref_covCI_2768_601.txt','r') as reffile:
-#with open('2768/COV_CI/lcref_covCI_2768_602.txt','r') as reffile:
-#with open('2768/COV_CI/lcref_covCI_2768_603.txt','r') as reffile:
-#with open('2768/COV_CI/lcref_covCI_2768_604.txt','r') as reffile:
+with open('2768/lcref_covCI_2768_600.txt','r') as reffile:
+#with open('2768/covariance_lists/lcref_covCI_2768_601.txt','r') as reffile:
+#with open('2768/covariance_lists/lcref_covCI_2768_602.txt','r') as reffile:
+#with open('2768/covariance_lists/lcref_covCI_2768_603.txt','r') as reffile:
+#with open('2768/covariance_lists/lcref_covCI_2768_604.txt','r') as reffile:
     #     ORBIT 2769
-#with open('2769/COV_CI/lcref_covCI_2769_600.txt','r') as reffile:
-#with open('2769/COV_CI/lcref_covCI_2769_601.txt','r') as reffile:
-#with open('2769/COV_CI/lcref_covCI_2769_602.txt','r') as reffile:
-#with open('2769/COV_CI/lcref_covCI_2769_603.txt','r') as reffile:
-#with open('2769/COV_CI/lcref_covCI_2769_604.txt','r') as reffile:
+#with open('2769/covariance_lists/lcref_covCI_2769_600.txt','r') as reffile:
+#with open('2769/covariance_lists/lcref_covCI_2769_601.txt','r') as reffile:
+#with open('2769/covariance_lists/lcref_covCI_2769_602.txt','r') as reffile:
+#with open('2769/covariance_lists/lcref_covCI_2769_603.txt','r') as reffile:
+#with open('2769/covariance_lists/lcref_covCI_2769_604.txt','r') as reffile:
     ref_fnames = [line.rstrip('\n') for line in reffile]
 reffile.close()
 n_ref = len(ref_fnames)
 
 #     ORBIT 2768
-with open('2768/COV_CI/bg_covCI_2768_600.txt','r') as bgfile:
-#with open('2768/COV_CI/bg_covCI_2768_601.txt','r') as bgfile:
-#with open('2768/COV_CI/bg_covCI_2768_602.txt','r') as bgfile:
-#with open('2768/COV_CI/bg_covCI_2768_603.txt','r') as bgfile:
-#with open('2768/COV_CI/bg_covCI_2768_604.txt','r') as bgfile:
+with open('2768/bg_covCI_2768_600.txt','r') as bgfile:
+#with open('2768/covariance_lists/bg_covCI_2768_601.txt','r') as bgfile:
+#with open('2768/covariance_lists/bg_covCI_2768_602.txt','r') as bgfile:
+#with open('2768/covariance_lists/bg_covCI_2768_603.txt','r') as bgfile:
+#with open('2768/covariance_lists/bg_covCI_2768_604.txt','r') as bgfile:
     #     ORBIT 2769
-#with open('2769/COV_CI/bg_covCI_2769_600.txt','r') as bgfile:
-#with open('2769/COV_CI/bg_covCI_2769_601.txt','r') as bgfile:
-#with open('2769/COV_CI/bg_covCI_2769_602.txt','r') as bgfile:
-#with open('2769/COV_CI/bg_covCI_2769_603.txt','r') as bgfile:
-#with open('2769/COV_CI/bg_covCI_2769_604.txt','r') as bgfile:
+#with open('2769/covariance_lists/bg_covCI_2769_600.txt','r') as bgfile:
+#with open('2769/covariance_lists/bg_covCI_2769_601.txt','r') as bgfile:
+#with open('2769/covariance_lists/bg_covCI_2769_602.txt','r') as bgfile:
+#with open('2769/covariance_lists/bg_covCI_2769_603.txt','r') as bgfile:
+#with open('2769/covariance_lists/bg_covCI_2769_604.txt','r') as bgfile:
     bg_fnames = [line.rstrip('\n') for line in bgfile]
 bgfile.close()
 n_bg = len(bg_fnames)
 
 #     ORBIT 2768
-with open('2768/COV_CI/bgref_covCI_2768_600.txt','r') as refbgfile:
-#with open('2768/COV_CI/bgref_covCI_2768_601.txt','r') as refbgfile:
-#with open('2768/COV_CI/bgref_covCI_2768_602.txt','r') as refbgfile:
-#with open('2768/COV_CI/bgref_covCI_2768_603.txt','r') as refbgfile:
-#with open('2768/COV_CI/bgref_covCI_2768_604.txt','r') as refbgfile:
+with open('2768/bgref_covCI_2768_600.txt','r') as refbgfile:
+#with open('2768/covariance_lists/bgref_covCI_2768_601.txt','r') as refbgfile:
+#with open('2768/covariance_lists/bgref_covCI_2768_602.txt','r') as refbgfile:
+#with open('2768/covariance_lists/bgref_covCI_2768_603.txt','r') as refbgfile:
+#with open('2768/covariance_lists/bgref_covCI_2768_604.txt','r') as refbgfile:
     #     ORBIT 2769
-#with open('2769/COV_CI/bgref_covCI_2769_600.txt','r') as refbgfile:
-#with open('2769/COV_CI/bgref_covCI_2769_601.txt','r') as refbgfile:
-#with open('2769/COV_CI/bgref_covCI_2769_602.txt','r') as refbgfile:
-#with open('2769/COV_CI/bgref_covCI_2769_603.txt','r') as refbgfile:
-#with open('2769/COV_CI/bgref_covCI_2769_604.txt','r') as refbgfile:
+#with open('2769/covariance_lists/bgref_covCI_2769_600.txt','r') as refbgfile:
+#with open('2769/covariance_lists/bgref_covCI_2769_601.txt','r') as refbgfile:
+#with open('2769/covariance_lists/bgref_covCI_2769_602.txt','r') as refbgfile:
+#with open('2769/covariance_lists/bgref_covCI_2769_603.txt','r') as refbgfile:
+#with open('2769/covariance_lists/bgref_covCI_2769_604.txt','r') as refbgfile:
     refbg_fnames = [line.rstrip('\n') for line in refbgfile]
 refbgfile.close()
 n_refbg = len(refbg_fnames)
@@ -127,21 +127,21 @@ for RUN in range (0,n_RUNS):
     lc_t_raw = lcdata.field('TIME') ; lc_t_raw = lc_t_raw - lc_t_raw[0]
     lc_r_raw = lcdata.field('RATE')
     lc_e_raw = lcdata.field('ERROR')
-    
+
     bgfits = fits.open(bg_fnames[RUN])
     bgdata = bgfits[1].data
     bgfits.close()
     bg_t_raw = bgdata.field('TIME') ; bg_t_raw = bg_t_raw - bg_t_raw[0]
     bg_r_raw = bgdata.field('RATE')
     bg_e_raw = bgdata.field('ERROR')
-    
+
     reffits = fits.open(ref_fnames[RUN])
     refdata = reffits[1].data
     reffits.close()
     ref_t_raw = refdata.field('TIME') ; ref_t_raw = ref_t_raw - ref_t_raw[0]
     ref_r_raw = refdata.field('RATE')
     ref_e_raw = refdata.field('ERROR')
-    
+
     refbgfits = fits.open(refbg_fnames[RUN])
     refbgdata = refbgfits[1].data
     refbgfits.close()
@@ -159,27 +159,27 @@ for RUN in range (0,n_RUNS):
     n_bins = len(lc_t)
     k = np.arange(n_bins-1)
     frq = k/max(lc_t)
-    
+
     DFT = np.fft.fft(lc_r) #/n
     DFT_ref = np.fft.fft(ref_r)
-    
+
     t_bins = lc_t[:-1]
     dt = t_bins[1] - t_bins[0]
-    
+
     # grabbing only the relevant parts of frq and DFT
     half_n_bins = int((n_bins-1.0)/2.0)
     frq = frq[range(half_n_bins)]
     DFT = DFT[range(half_n_bins)]
     DFT_ref = DFT_ref[range(half_n_bins)]
     df = frq[1] - frq[0]
-    
+
     # computing the PSD and background level
     PSD = (2.0*dt*abs(DFT)**2.0)/(n_bins*avg_rate**2.0)
     PN_lev = 2.0*(avg_rate + avg_bg_rate)/(avg_rate**2.0)
-    
+
     PSD_ref = (2.0*dt*abs(DFT_ref)**2.0)/(n_bins*avg_ref_rate**2.0)
     PN_ref = 2.0*(avg_ref_rate + avg_refbg_rate)/(avg_ref_rate**2.0)
-    
+
     if (RUN == 0):
         w, h = n_lc, half_n_bins
         r = [[0 for x in range(w)] for y in range(h)]
@@ -187,7 +187,7 @@ for RUN in range (0,n_RUNS):
         r_ref = [[0 for x in range(w)] for y in range(h)]
         phi_ref = [[0 for x in range(w)] for y in range(h)]
         CS = [[0 for x in range(w)] for y in range(h)]
-        
+
     # working with the DFT values
     for i in range (0,half_n_bins):
         r[i][RUN], phi[i][RUN] = cmath.polar(DFT[i])
@@ -219,7 +219,7 @@ for RUN in range (0,n_RUNS):
     PSD_LF_avg = PSD_LF_avg / C_LF
     PSD_MF_avg = PSD_MF_avg / C_MF
     PSD_HF_avg = PSD_HF_avg / C_HF
-    
+
     CS_LF_avg = CS_LF_avg / C_LF
     CS_MF_avg = CS_MF_avg / C_MF
     CS_HF_avg = CS_HF_avg / C_HF
@@ -237,7 +237,7 @@ for RUN in range (0,n_RUNS):
         if (2e-3 <= frq[i] <= 4e-3):
             C_ref_HF += 1
             PSD_ref_HF_avg += PSD_ref[i]
-    
+
     PSD_ref_LF_avg = PSD_ref_LF_avg / C_ref_LF
     PSD_ref_MF_avg = PSD_ref_MF_avg / C_ref_MF
     PSD_ref_HF_avg = PSD_ref_HF_avg / C_ref_HF
@@ -246,19 +246,19 @@ for RUN in range (0,n_RUNS):
         COV_LF = np.zeros(n_lc)
         COV_MF = np.zeros(n_lc)
         COV_HF = np.zeros(n_lc)
-            
+
     nsq_LF = ((PSD_LF_avg - PN_lev)*PN_ref + (PSD_ref_LF_avg - PN_ref)*PN_lev + PN_lev*PN_ref)/C_LF
     dfrq_LF = Df_LF
     COV_LF[RUN] = avg_rate * np.sqrt( dfrq_LF*(abs(CS_LF_avg)**2.0 - nsq_LF) / (PSD_ref_LF_avg - PN_ref) )
-    
+
     nsq_MF = ((PSD_MF_avg - PN_lev)*PN_ref + (PSD_ref_MF_avg - PN_ref)*PN_lev + PN_lev*PN_ref)/C_MF
     dfrq_MF = Df_MF
     COV_MF[RUN] = avg_rate * np.sqrt( dfrq_MF*(abs(CS_MF_avg)**2.0 - nsq_MF) / (PSD_ref_MF_avg - PN_ref) )
-    
+
     nsq_HF = ((PSD_HF_avg - PN_lev)*PN_ref + (PSD_ref_HF_avg - PN_ref)*PN_lev + PN_lev*PN_ref)/C_HF
     dfrq_HF = Df_HF
     COV_HF[RUN] = avg_rate * np.sqrt( dfrq_HF*(abs(CS_HF_avg)**2.0 - nsq_HF) / (PSD_ref_HF_avg - PN_ref) )
-    
+
 
 w, h = 4, len(energy)
 M = [[0 for x in range(w)] for y in range(h)]
