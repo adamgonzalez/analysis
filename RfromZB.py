@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 @author: adamg
@@ -7,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 from scipy.stats import gaussian_kde
+import random
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -28,10 +30,19 @@ def R_calc(h,v):
     return value
 ####################################################################################################
 
-res = 500
-z = np.logspace(np.log10(2.0), np.log10(20.0), res)
-# z = np.linspace(2.0, 20.0, res)
-beta = np.linspace(0.0, 1.0, res)
+res = 1000
+minh, maxh = 2.0, 30.0
+
+# z = np.logspace(np.log10(2.0), np.log10(10.0), res)
+## z = np.linspace(2.0, 50.0, res)
+# beta = np.linspace(0.0, 1.0, res)
+
+z, beta = np.zeros(res), np.zeros(res)
+for i in range (0,res):
+    z[i] = random.uniform(minh,maxh)
+    beta[i] = random.random()
+
+
 Rvs = np.zeros([res+1,res+1])
 
 # compute R as function of source height and source velocity
@@ -81,20 +92,23 @@ for i in range (0, res):
         if (Rvs[i+1,j+1]<=(0.54+0.04)) and (Rvs[i+1,j+1]>=(0.54-0.04)):
             c += 1
             pairs = np.append(pairs,[[Rvs[i+1,0],Rvs[0,j+1]]], axis=0)
-
-# Calculate the point density
-# xy = np.vstack([pairs[1:,0],pairs[1:,1]])
-# z = gaussian_kde(xy)(xy)
-
 print 'Number of sources within R = 0.54pm0.04 =', c
 print ''
 
-plt.figure(2)
-# plt.scatter(x=pairs[1:,0], y=pairs[1:,1], c='r', s=50.0)
-plt.hist2d(pairs[1:,0], pairs[1:,1], (25,25), cmap=plt.cm.plasma) ; plt.colorbar()
-plt.xlabel(r'Height, $z$')
-plt.ylabel(r'Velocity, $\beta$')
-plt.xlim(z[0]-0.5,z[-1]+0.5)
-plt.ylim(0.34,0.90)
-# plt.savefig('/Users/agonzalez/Desktop/IZw1_VH_parameterspace.png', bbox_inches='tight', dpi=300)
-plt.show()
+# f = open("big_sim.txt","a")
+# np.savetxt(f, pairs[1:,:])
+
+# plt.figure()
+# plt.scatter(x=Rvs[1:,0],y=Rvs[0,1:], s=10.0, color='k')
+# plt.scatter(x=pairs[1:,0],y=pairs[1:,1], s=2.0, color='r')
+# plt.show()
+
+# plt.figure(2)
+# plt.hist2d(pairs[1:,0], pairs[1:,1], (50,50), cmap=plt.get_cmap('binary')) ; plt.colorbar()
+# plt.xlabel(r'Height, $z$')
+# plt.ylabel(r'Velocity, $\beta$')
+# plt.xlim(minh,maxh)
+# plt.ylim(0.0,1.0)
+# # plt.ylim(0.34,0.90)
+# # plt.savefig('/Users/agonzalez/Desktop/IZw1_VH_parameterspace.png', bbox_inches='tight', dpi=300)
+# plt.show()

@@ -63,7 +63,10 @@ for i in range (0,res):
     R[3][i] = abs(R[0][i]-R[1][i])
     R[4][i] = abs(R[0][i]-R[2][i])
 
-ax.fill_betweenx(y=Vesc[0][:], x1=R[0][:]-R[4][:], x2=R[0][:]+R[3][:], color='k', alpha=0.25)
+ax.fill_betweenx(y=Vesc[0][:], x1=R[0][:]-R[4][:], x2=R[0][:]+R[3][:], color='k', alpha=0.15)
+ax.scatter(x=10.0, y=0.45, s=25.0, c='g', label=r'10$r_g$, 0.45')
+ax.scatter(x=18.0, y=0.39, s=25.0, c='c', label=r'18$r_g$, 0.39')
+ax.scatter(x=27.0, y=0.36, s=25.0, c='m', label=r'27$r_g$, 0.36')
 plt.legend(loc=1, ncol=1, labelspacing=0.1, fontsize=16, handletextpad=0.1, fancybox=False, frameon=False)
 ax.get_legend()
 ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
