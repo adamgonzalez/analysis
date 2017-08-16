@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib
 from scipy.stats import gaussian_kde
 import random
+import time
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -30,28 +31,34 @@ def R_calc(h,v):
     return value
 ####################################################################################################
 
-res = 1000
+res = 2000
 minh, maxh = 2.0, 30.0
+minv, maxv = 0.3, 0.75
 
 # z = np.logspace(np.log10(2.0), np.log10(10.0), res)
 ## z = np.linspace(2.0, 50.0, res)
 # beta = np.linspace(0.0, 1.0, res)
 
+t0 = time.time()
 z, beta = np.zeros(res), np.zeros(res)
 for i in range (0,res):
     z[i] = random.uniform(minh,maxh)
-    beta[i] = random.random()
-
+    # beta[i] = random.random()
+    beta[i] = random.uniform(minv,maxv)
+t1 = time.time()
+print "Setting up the randoms: ", t1-t0
 
 Rvs = np.zeros([res+1,res+1])
 
+t0 = time.time()
 # compute R as function of source height and source velocity
 for i in range (0, res):
     for j in range (0, res):
         Rvs[0,j+1] = beta[j]
         Rvs[i+1,j+1] = R_calc(z[i],beta[j])
     Rvs[i+1,0] = z[i]
-
+t1 = time.time()
+print "Computing R: ", t1-t0
 
 # # plot up R vs Z and B
 # plt.figure(1)
@@ -87,21 +94,26 @@ for i in range (0, res):
 # Compute and plot the pairs (z,b) that match the reflection fraction desired
 c = 0
 pairs = [[0,0]]
+t0 = time.time()
 for i in range (0, res):
     for j in range (0, res):
         if (Rvs[i+1,j+1]<=(0.54+0.04)) and (Rvs[i+1,j+1]>=(0.54-0.04)):
             c += 1
             pairs = np.append(pairs,[[Rvs[i+1,0],Rvs[0,j+1]]], axis=0)
+t1 = time.time()
+print "Finding the pars: ", t1-t0
 print 'Number of sources within R = 0.54pm0.04 =', c
 print ''
 
-# f = open("big_sim.txt","a")
+# f = open("big_sim_aug16.txt","a")
 # np.savetxt(f, pairs[1:,:])
 
-# plt.figure()
-# plt.scatter(x=Rvs[1:,0],y=Rvs[0,1:], s=10.0, color='k')
+plt.figure()
+plt.scatter(x=Rvs[1:,0],y=Rvs[0,1:], s=10.0, color='k')
+plt.xlim(minh, maxh)
+plt.ylim(0.0, 1.0)
 # plt.scatter(x=pairs[1:,0],y=pairs[1:,1], s=2.0, color='r')
-# plt.show()
+plt.show()
 
 # plt.figure(2)
 # plt.hist2d(pairs[1:,0], pairs[1:,1], (50,50), cmap=plt.get_cmap('binary')) ; plt.colorbar()
