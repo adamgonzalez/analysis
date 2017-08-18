@@ -31,9 +31,10 @@ def R_calc(h,v):
     return value
 ####################################################################################################
 
-res = 2000
+res = 1000
 minh, maxh = 2.0, 30.0
-minv, maxv = 0.3, 0.75
+minv, maxv = 0.0, 1.0
+# minv, maxv = 0.3, 0.75
 
 # z = np.logspace(np.log10(2.0), np.log10(10.0), res)
 ## z = np.linspace(2.0, 50.0, res)
@@ -112,7 +113,10 @@ plt.figure()
 plt.scatter(x=Rvs[1:,0],y=Rvs[0,1:], s=10.0, color='k')
 plt.xlim(minh, maxh)
 plt.ylim(0.0, 1.0)
-# plt.scatter(x=pairs[1:,0],y=pairs[1:,1], s=2.0, color='r')
+plt.scatter(x=pairs[1:,0],y=pairs[1:,1], s=2.0, color='r', alpha=0.75)
+plt.xlabel(r'Height, $z$')
+plt.ylabel(r'Velocity, $\beta$')
+plt.savefig('/Users/agonzalez/Desktop/IZw1_VH_randoms_pairs.png', bbox_inches='tight', dpi=300)
 plt.show()
 
 # plt.figure(2)
