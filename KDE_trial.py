@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 import scipy.stats as st
-from scipy.stats import gaussian_kde
 import time
+from matplotlib.colors import LinearSegmentedColormap
+from scipy.stats import gaussian_kde
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -127,20 +128,67 @@ f = np.reshape(kernel(positions).T, xx.shape)
 t9 = time.time()
 print "Reshape:   ", t9-t8
 
+
+# cdict1 = {'red':   ((0.00, 1.0, 1.0),
+#                     (0.10, 1.0, 1.0),
+#                     (0.25, 0.66, 0.66),
+#                     (0.75, 0.33, 0.33),
+#                     (1.00, 0.0, 0.0)),
+#          'green':  ((0.00, 1.0, 1.0),
+#                     (0.10, 1.0, 1.0),
+#                     (0.25, 0.66, 0.66),
+#                     (0.75, 0.33, 0.33),
+#                     (1.00, 0.0, 0.0)),
+#          'blue':   ((0.00, 1.0, 1.0),
+#                     (0.10, 1.0, 1.0),
+#                     (0.25, 0.66, 0.66),
+#                     (0.75, 0.33, 0.33),
+#                     (1.00, 0.0, 0.0)),
+#         }
+cdict1 = {'blue':   ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 1.0, 1.0),
+                    (0.40, 1.0, 1.0),
+                    (0.60, 1.0, 1.0),
+                    (0.80, 1.0, 1.0),
+                    (1.00, 0.1, 0.1)),
+
+         'green':  ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 0.8, 0.8),
+                    (0.40, 0.6, 0.6),
+                    (0.60, 0.4, 0.4),
+                    (0.80, 0.2, 0.2),
+                    (1.00, 0.0, 0.0)),
+
+         'red':   ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 0.0, 0.0),
+                    (0.40, 0.0, 0.0),
+                    (0.60, 0.0, 0.0),
+                    (0.80, 0.0, 0.0),
+                    (1.00, 0.0, 0.0)),
+        }
+cmcust = LinearSegmentedColormap('customcmap', cdict1)
+
+
 # fig = plt.figure()
 # ax = fig.gca()
 ax.set_xlim(xmin, xmax)
 ax.set_ylim(ymin, ymax)
 # Contourf plot
-cfset = ax.contourf(xx, yy, f, cmap=plt.cm.get_cmap(scheme))
+cfset = ax.contourf(xx, yy, f, cmap=cmcust) #cmap=plt.cm.get_cmap(scheme))
+# cbar4 = plt.colorbar(cfset)
+# cbar4 = plt.colorbar(cfset, fraction=0.105, pad=0.05, ticks=[-0.02, 0.0, 0.02, 0.04, 0.06, 0.08, 0.10])
+
 # Or kernel density estimate plot instead of the contourf plot
 # ax.imshow(np.rot90(f), cmap='Blues', extent=[xmin, xmax, ymin, ymax])
 # Contour plot
 cset = ax.contour(xx, yy, f, colors='k', linewidths=0.5)
 # Label plot
 # ax.clabel(cset, inline=1, fontsize=10)
-ax.set_xlabel(r'Height, $z$')
-ax.set_ylabel(r'Velocity, $\beta$')
+ax.set_xlabel(r'Source Height /$r_g$')
+ax.set_ylabel(r'Source Velocity /$c$')
 ##---------------------------------------------------------------------------------------
 
 ##---------------------------------------------------------------------------------------
@@ -181,4 +229,4 @@ ax.set_ylabel(r'Velocity, $\beta$')
 # plt.savefig('/Users/agonzalez/Desktop/big_sim_aug18_grey.png', bbox_inches='tight', dpi=300)
 # plt.savefig('/Users/agonzalez/Desktop/place_holder.ps', format='ps', bbox_inches='tight', dpi=300)
 plt.savefig('/Users/agonzalez/Desktop/contour_place_holder.ps', format='ps', bbox_inches='tight', dpi=300)
-# plt.show()
+plt.show()
