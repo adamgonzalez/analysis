@@ -125,8 +125,13 @@ print "Kernel:    ", t7-t6
 
 t8 = time.time()
 f = np.reshape(kernel(positions).T, xx.shape)
+# f = np.genfromtxt("multi_sim_fvals.txt")
 t9 = time.time()
 print "Reshape:   ", t9-t8
+print f.shape
+
+# filename = open("multi_sim_fvals.txt","w")
+# np.savetxt(filename, f)
 
 
 # cdict1 = {'red':   ((0.00, 1.0, 1.0),
@@ -178,15 +183,17 @@ ax.set_xlim(xmin, xmax)
 ax.set_ylim(ymin, ymax)
 # Contourf plot
 cfset = ax.contourf(xx, yy, f, cmap=cmcust) #cmap=plt.cm.get_cmap(scheme))
-# cbar4 = plt.colorbar(cfset)
-# cbar4 = plt.colorbar(cfset, fraction=0.105, pad=0.05, ticks=[-0.02, 0.0, 0.02, 0.04, 0.06, 0.08, 0.10])
+#cbar4 = plt.colorbar(cfset)
+cbar4 = plt.colorbar(cfset, pad=0.05)#, ticks=[-0.02, 0.0, 0.02, 0.04, 0.06, 0.08, 0.10])
+cbar4.ax.set_ylabel('Probability Density', rotation='270', labelpad=25.0)
+
 
 # Or kernel density estimate plot instead of the contourf plot
 # ax.imshow(np.rot90(f), cmap='Blues', extent=[xmin, xmax, ymin, ymax])
 # Contour plot
 cset = ax.contour(xx, yy, f, colors='k', linewidths=0.5)
 # Label plot
-# ax.clabel(cset, inline=1, fontsize=10)
+#ax.clabel(cset, inline=1, fontsize=10)
 ax.set_xlabel(r'Source Height /$r_g$')
 ax.set_ylabel(r'Source Velocity /$c$')
 ##---------------------------------------------------------------------------------------
@@ -228,5 +235,5 @@ ax.set_ylabel(r'Source Velocity /$c$')
 # plt.savefig('/Users/agonzalez/Desktop/big_sim_grey.png', bbox_inches='tight', dpi=300)
 # plt.savefig('/Users/agonzalez/Desktop/big_sim_aug18_grey.png', bbox_inches='tight', dpi=300)
 # plt.savefig('/Users/agonzalez/Desktop/place_holder.ps', format='ps', bbox_inches='tight', dpi=300)
-plt.savefig('/Users/agonzalez/Desktop/contour_place_holder.ps', format='ps', bbox_inches='tight', dpi=300)
+plt.savefig('/Users/agonzalez/Desktop/contour_place_holder_colorbar.ps', format='ps', bbox_inches='tight', dpi=300)
 plt.show()
