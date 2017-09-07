@@ -19,19 +19,22 @@ matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
 plt.rc('font',family='serif')
 plt.rc('text',usetex=True)
 
-# os.chdir("/Users/agonzalez/Documents/Research/Data/IZw1")
+os.chdir("/Users/agonzalez/Documents/Research/Data/IZw1")
 # data = np.genfromtxt("single_sim.txt")
-# data = np.genfromtxt("multi_sim.txt")
+data = np.genfromtxt("multi_sim.txt")
 # data = np.genfromtxt("big_sim.txt")
 # data = np.genfromtxt("big_sim_aug16.txt")
 
-os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501")
-data = np.genfromtxt("suz.txt")
+# os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501")
+# data = np.genfromtxt("suz.txt")
 # data = np.genfromtxt("xmm.txt")
 
 x, y = data[:,0], data[:,1]
 minh, maxh = 2.0, 30.0
-scheme = 'Greys'
+# scheme = 'Greys'
+
+print 'Avg height = ', np.average(x)
+print 'Avg velocity = ', np.average(y)
 
 plt.figure()
 ax = plt.subplot(111)
@@ -54,10 +57,10 @@ res = 50
 Vesc = np.zeros([5,res])
 R = np.zeros([5,res])
 
-for j in range (0,1):
+for j in range (0,3):
     if (j==0):
-        # M_bh = pow(10.0, 7.30)*M_sun ; name = 'Negrete et al. (2012)'
-        M_bh = pow(10.0, 9.0)*M_sun ; name = 'Salvi et al. (2002)'
+        M_bh = pow(10.0, 7.30)*M_sun ; name = 'Negrete et al. (2012)'
+        # M_bh = pow(10.0, 9.0)*M_sun ; name = 'Salvi et al. (2002)'
         r_g0 = (G*M_bh)/(c**2.0)
     if (j==1):
         M_bh = pow(10.0, 7.30+0.23)*M_sun ; name = 'Mass + error'
@@ -104,12 +107,8 @@ ax.tick_params(axis='both', which='both', direction='in', top='on', right='on')
 ####################################################################################################
 
 ##---------------------------------------------------------------------------------------
-# # Do it the Seaborn way
-# data = np.random.multivariate_normal((0, 0), [[0.8, 0.05], [0.05, 0.7]], 100)
-# x = data[:, 0]
-# y = data[:, 1]
 xmin, xmax = minh, maxh
-ymin, ymax = 0.5, 1.0
+ymin, ymax = 0.25, 0.75
 
 # Peform the kernel density estimate
 t0 = time.time()
@@ -134,39 +133,11 @@ print "Kernel:    ", t7-t6
 
 t8 = time.time()
 f = np.reshape(kernel(positions).T, xx.shape)
-# f = np.genfromtxt("multi_sim_fvals.txt")
 t9 = time.time()
 print "Reshape:   ", t9-t8
 # print f.shape
 
-# filename = open("multi_sim_fvals.txt","w")
-# np.savetxt(filename, f)
 
-
-cdict2 = {'red':   ((0.00, 1.0, 1.0),
-                    (0.10, 1.0, 1.0),
-                    (0.20, 1.0, 1.0),
-                    (0.40, 1.0, 1.0),
-                    (0.60, 1.0, 1.0),
-                    (0.80, 1.0, 1.0),
-                    (1.00, 0.1, 0.1)),
-
-         'green':  ((0.00, 1.0, 1.0),
-                    (0.10, 1.0, 1.0),
-                    (0.20, 0.8, 0.8),
-                    (0.40, 0.6, 0.6),
-                    (0.60, 0.4, 0.4),
-                    (0.80, 0.2, 0.2),
-                    (1.00, 0.0, 0.0)),
-
-         'blue':   ((0.00, 1.0, 1.0),
-                    (0.10, 1.0, 1.0),
-                    (0.20, 0.0, 0.0),
-                    (0.40, 0.0, 0.0),
-                    (0.60, 0.0, 0.0),
-                    (0.80, 0.0, 0.0),
-                    (1.00, 0.0, 0.0)),
-        }
 cdict1 = {'blue':   ((0.00, 1.0, 1.0),
                     (0.10, 1.0, 1.0),
                     (0.20, 1.0, 1.0),
@@ -191,6 +162,31 @@ cdict1 = {'blue':   ((0.00, 1.0, 1.0),
                     (0.80, 0.0, 0.0),
                     (1.00, 0.0, 0.0)),
         }
+cdict2 = {'red':   ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 1.0, 1.0),
+                    (0.40, 1.0, 1.0),
+                    (0.60, 1.0, 1.0),
+                    (0.80, 1.0, 1.0),
+                    (1.00, 0.1, 0.1)),
+
+         'green':  ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 0.8, 0.8),
+                    (0.40, 0.6, 0.6),
+                    (0.60, 0.4, 0.4),
+                    (0.80, 0.2, 0.2),
+                    (1.00, 0.0, 0.0)),
+
+         'blue':   ((0.00, 1.0, 1.0),
+                    (0.10, 1.0, 1.0),
+                    (0.20, 0.0, 0.0),
+                    (0.40, 0.0, 0.0),
+                    (0.60, 0.0, 0.0),
+                    (0.80, 0.0, 0.0),
+                    (1.00, 0.0, 0.0)),
+        }
+
 cmcust = LinearSegmentedColormap('customcmap', cdict1)
 
 
@@ -198,17 +194,16 @@ cmcust = LinearSegmentedColormap('customcmap', cdict1)
 # ax = fig.gca()
 ax.set_xlim(xmin, xmax)
 ax.set_ylim(ymin, ymax)
+
 # Contourf plot
 cfset = ax.contourf(xx, yy, f, cmap=cmcust) #cmap=plt.cm.get_cmap(scheme))
 #cbar4 = plt.colorbar(cfset)
 cbar4 = plt.colorbar(cfset, pad=0.05)#, ticks=[-0.02, 0.0, 0.02, 0.04, 0.06, 0.08, 0.10])
-cbar4.ax.set_ylabel('Probability Density', rotation='270', labelpad=25.0)
+cbar4.ax.set_ylabel('Density', rotation='270', labelpad=25.0)
 
-
-# Or kernel density estimate plot instead of the contourf plot
-# ax.imshow(np.rot90(f), cmap='Blues', extent=[xmin, xmax, ymin, ymax])
 # Contour plot
 cset = ax.contour(xx, yy, f, colors='k', linewidths=0.5)
+
 # Label plot
 #ax.clabel(cset, inline=1, fontsize=10)
 ax.set_xlabel(r'Source Height /$r_g$')
@@ -245,13 +240,7 @@ ax.set_ylabel(r'Source Velocity /$c$')
 
 
 
-
-
-# plt.savefig('/Users/agonzalez/Desktop/single_sim.png', bbox_inches='tight', dpi=300)
-# plt.savefig('/Users/agonzalez/Desktop/multi_sim.png', bbox_inches='tight', dpi=300)
-# plt.savefig('/Users/agonzalez/Desktop/big_sim_grey.png', bbox_inches='tight', dpi=300)
-# plt.savefig('/Users/agonzalez/Desktop/big_sim_aug18_grey.png', bbox_inches='tight', dpi=300)
-# plt.savefig('/Users/agonzalez/Desktop/place_holder.ps', format='ps', bbox_inches='tight', dpi=300)
+# plt.savefig('/Users/agonzalez/Desktop/IZw1_kde.png', bbox_inches='tight', dpi=300)
 # plt.savefig('/Users/agonzalez/Desktop/contour_place_holder_colorbar.ps', format='ps', bbox_inches='tight', dpi=300)
 
 # plt.savefig('/Users/agonzalez/Desktop/xmm.png', bbox_inches='tight', dpi=300)
