@@ -238,11 +238,9 @@ ax.set_ylabel(r'Source Velocity /$c$')
 # ax.set_xlabel(r'Height, $z$') ; ax.set_ylabel(r'Velocity, $\beta$') ; ax.set_xlim(minh,maxh) ; ax.set_ylim(0.25,0.75)
 ##---------------------------------------------------------------------------------------
 
-
-
 # plt.savefig('/Users/agonzalez/Desktop/IZw1_kde.png', bbox_inches='tight', dpi=300)
 # plt.savefig('/Users/agonzalez/Desktop/contour_place_holder_colorbar.ps', format='ps', bbox_inches='tight', dpi=300)
 
 # plt.savefig('/Users/agonzalez/Desktop/xmm.png', bbox_inches='tight', dpi=300)
 
-plt.show()
+# plt.show()

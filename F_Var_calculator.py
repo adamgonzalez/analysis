@@ -9,7 +9,7 @@ Created on Thu Jul 20 11:43:39 2017
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
-import os 
+import os
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -133,7 +133,7 @@ for i in range (0,h):
         swiftbin[i,1] = np.average(swift[lower[i]:upper[i],1])
         swiftbin[i,2] = np.average(swift[lower[i]:upper[i],3])
         swiftbin[i,3] = error_avg(swift[lower[i]:upper[i],3],swift[lower[i]:upper[i],4], np.average(swift[lower[i]:upper[i],3]))
-        
+
 # compute the fractional variability of the binned swift light curve
 swiftbinavg, e_swiftbinavg = wmean(swiftbin[:,2], swiftbin[:,3])
 fvar_swiftbin, e_fvar_swiftbin = fvarcalc(swiftbin[:,2], swiftbin[:,3], swiftbinavg)
