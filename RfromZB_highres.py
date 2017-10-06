@@ -10,6 +10,7 @@ import matplotlib
 from scipy.stats import gaussian_kde
 import random
 import time
+import os
 
 matplotlib.rcParams.update({'font.size': 18})
 matplotlib.rcParams['axes.linewidth'] = 1 #set the value globally
@@ -31,10 +32,12 @@ def R_calc(h,v):
     return value
 ####################################################################################################
 
-resh, resv = 5600, 900
+os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501")
+
+resh, resv = 5600, 500
 minh, maxh = 2.0, 30.0
-minv, maxv = 0.0, 1.0
-minv, maxv = 0.3, 0.75
+# minv, maxv = 0.0, 1.0
+minv, maxv = 0.5, 1.0
 
 t0 = time.time()
 z, beta = np.zeros(resh), np.zeros(resv)
@@ -91,18 +94,20 @@ print "Computing R: ", t1-t0
 # Compute and plot the pairs (z,b) that match the reflection fraction desired
 c = 0
 pairs = [[0,0]]
+# minR, maxR = 0.54-0.04, 0.54+0.04
+minR, maxR = 0.204-0.033, 0.204+0.017
 t0 = time.time()
 for i in range (0, resh):
     for j in range (0, resv):
-        if (Rvs[i+1,j+1]<=(0.54+0.04)) and (Rvs[i+1,j+1]>=(0.54-0.04)):
+        if (Rvs[i+1,j+1]<=maxR) and (Rvs[i+1,j+1]>=minR):
             c += 1
             pairs = np.append(pairs,[[Rvs[i+1,0],Rvs[0,j+1]]], axis=0)
 t1 = time.time()
 print "Finding the pars: ", t1-t0
-print 'Number of sources within R = 0.54pm0.04 =', c
+print 'Number of sources within R = ', minR, ' to ', maxR, ' is ', c
 print ''
 
-f = open("big_sim_aug18.txt","a")
+f = open("xmm_big.txt","a")
 np.savetxt(f, pairs[1:,:])
 
 # plt.figure()
