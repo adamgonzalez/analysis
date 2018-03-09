@@ -37,12 +37,8 @@ def R_calc(h,v):
 
 res = 1000
 minh, maxh = 2.0, 30.0
-minv, maxv = 0.6, 1.0
-# minv, maxv = 0.3, 0.75
-
-# z = np.logspace(np.log10(2.0), np.log10(10.0), res)
-## z = np.linspace(2.0, 50.0, res)
-# beta = np.linspace(0.0, 1.0, res)
+minv, maxv = 0.5, 1.0
+# minv, maxv = 0.25, 0.75
 
 t0 = time.time()
 z, beta = np.zeros(res), np.zeros(res)
@@ -100,8 +96,8 @@ print "Computing R: ", t1-t0
 c = 0
 pairs = [[0,0]]
 # minR, maxR = 0.54-0.04, 0.54+0.04
-# minR, maxR = 0.150-0.017, 0.150+0.013
-minR, maxR = 0.204-0.033, 0.204+0.017
+# minR, maxR = 0.150-0.017, 0.150+0.013     # Suzaku
+minR, maxR = 0.204-0.033, 0.204+0.017     # XMM
 t0 = time.time()
 for i in range (0, res):
     for j in range (0, res):
