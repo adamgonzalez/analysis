@@ -32,7 +32,7 @@ def R_calc(h,v):
     return value
 ####################################################################################################
 
-os.chdir("/Users/agonzalez/Documents/Research/Data/Mrk1501/VHdet")
+os.chdir("/Users/agonzalez/Documents/Research/Data/IZw1")
 
 # resh, resv = 8400, 150
 # resh, resv = 1000, 1000
@@ -97,23 +97,23 @@ for k in range (0, 1):
     R = np.zeros([5,res])
 
     for j in range (0,3):
-        # # I Zw 1
-        # if (j==0):
-        #     M_bh = pow(10.0, 7.30)*M_sun ; name = 'Negrete et al. (2012)'
-        #     r_g0 = (G*M_bh)/(c**2.0)
-        # if (j==1):
-        #     M_bh = pow(10.0, 7.30+0.23)*M_sun ; name = 'Mass + error'
-        # if (j==2):
-        #     M_bh = pow(10.0, 7.30-0.19)*M_sun ; name = 'Mass -- error'
-
-        # III Zw 2
+        ### I Zw 1
         if (j==0):
-            M_bh = 184000000.*M_sun ; name = 'van den Bosch (2016) <- Grier et al. (2012)'
+            M_bh = pow(10.0, 7.30)*M_sun ; name = 'Negrete et al. (2012)'
             r_g0 = (G*M_bh)/(c**2.0)
         if (j==1):
-            M_bh = (184000000.+27000000.)*M_sun ; name = '+'
+            M_bh = pow(10.0, 7.30+0.23)*M_sun ; name = 'Mass + error'
         if (j==2):
-            M_bh = (184000000.-27000000.)*M_sun ; name = '--'
+            M_bh = pow(10.0, 7.30-0.19)*M_sun ; name = 'Mass -- error'
+
+        ### III Zw 2
+        # if (j==0):
+        #     M_bh = 184000000.*M_sun ; name = 'van den Bosch (2016) <- Grier et al. (2012)'
+        #     r_g0 = (G*M_bh)/(c**2.0)
+        # if (j==1):
+        #     M_bh = (184000000.+27000000.)*M_sun ; name = '+'
+        # if (j==2):
+        #     M_bh = (184000000.-27000000.)*M_sun ; name = '--'
 
 
         R_s = (2.0*G*M_bh)/(c**2.0)
@@ -146,10 +146,10 @@ for k in range (0, 1):
     # Compute and plot the pairs (z,b) that match the reflection fraction desired
     c = 0
     pairs = [[0,0,0]]
-    ## minR, maxR = 0.54-0.04, 0.54+0.04       ### IZw1
+    minR, maxR = 0.54-0.04, 0.54+0.04       ### IZw1
     # minR, maxR = 0.204-0.033, 0.204+0.017   ### IIIZw2
     ## minR, maxR = 0.2-0.05, 0.2+0.05           ### test
-    minR, maxR = 0.23-0.03, 0.23+0.02   ### IIIZw2 XMM
+    # minR, maxR = 0.23-0.03, 0.23+0.02   ### IIIZw2 XMM
     # minR, maxR = 0.12-0.02, 0.12+0.01   ### IIIZw2 Suzaku
     print "Finding the pairs..."
     t0 = time.time()
@@ -183,5 +183,5 @@ for k in range (0, 1):
     plt.xlim(minh,maxh)
     plt.ylim(minv,maxv)
 
-    # plt.savefig('xmm_RZB.png', bbox_inches='tight', dpi=300)
-    plt.show()
+    plt.savefig('IZw1_RZB.png', bbox_inches='tight', dpi=600)
+    # plt.show()
